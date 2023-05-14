@@ -1,7 +1,6 @@
 namespace Domain.Models;
 
-public class Gender
+public class Gender : BaseEntity
 {
-    public long Id { get; set; }
-    public string Name { get; set; } = null!;
+    public string Name { get; set; }
 }

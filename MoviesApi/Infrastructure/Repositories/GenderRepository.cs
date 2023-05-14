@@ -13,12 +13,12 @@ public class GenderRepository : IGenderRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Gender?>> GetAll()
+    public async Task<IEnumerable<Gender>> GetAll()
     {
         return await _dbContext.Genders.ToListAsync();
     }
 
-    public async Task<Gender?> GetById(long id)
+    public async Task<Gender> GetById(long id)
     {
         return await _dbContext.Genders.FirstOrDefaultAsync(gender => gender != null && gender.Id == id);
     }

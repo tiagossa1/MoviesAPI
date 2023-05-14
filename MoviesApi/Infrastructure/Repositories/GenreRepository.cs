@@ -13,12 +13,12 @@ public class GenreRepository : IGenreRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Genre?>> GetAll()
+    public async Task<IEnumerable<Genre>> GetAll()
     {
         return await _dbContext.Genres.ToListAsync();
     }
 
-    public async Task<Genre?> GetById(long id)
+    public async Task<Genre> GetById(long id)
     {
         return await _dbContext.Genres.FirstOrDefaultAsync(genre => genre.Id == id);
     }

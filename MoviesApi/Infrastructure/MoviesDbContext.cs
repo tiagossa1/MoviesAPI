@@ -1,18 +1,23 @@
 using Domain.Models;
+using Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
 
 public class MoviesDbContext : DbContext
 {
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     optionsBuilder.UseInMemoryDatabase("MoviesDb");
-    // }
+    public MoviesDbContext(DbContextOptions<MoviesDbContext> options) : base(options)
+    {
+    }
 
-    public DbSet<Gender> Genders { get; set; } = null!;
-    public DbSet<Genre> Genres { get; set; } = null!;
-    public DbSet<Movie> Movies { get; set; } = null!;
-    public DbSet<MovieCast> MovieCasts { get; set; } = null!;
-    public DbSet<Person> People { get; set; } = null!;
+    public DbSet<Gender> Genders { get; set; }
+    public DbSet<Genre> Genres { get; set; }
+    public DbSet<Movie> Movies { get; set; }
+    public DbSet<MovieCast> MovieCasts { get; set; }
+    public DbSet<Person> People { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(GenderEntityBuilderConfiguration).Assembly);
+    }
 }

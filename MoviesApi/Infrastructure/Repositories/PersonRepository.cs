@@ -13,12 +13,12 @@ public class PersonRepository : IPersonRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Person?>> GetAll()
+    public async Task<IEnumerable<Person>> GetAll()
     {
         return await _dbContext.People.ToListAsync();
     }
 
-    public async Task<Person?> GetById(long id)
+    public async Task<Person> GetById(long id)
     {
         return await _dbContext.People.FirstOrDefaultAsync(person => person.Id == id);
     }

@@ -1,7 +1,6 @@
 namespace Domain.Models;
 
-public class Genre
+public class Genre : BaseEntity
 {
-    public long Id { get; set; }
-    public string Name { get; set; } = null!;
+    public string Name { get; set; }
 }

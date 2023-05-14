@@ -13,7 +13,7 @@ public class MovieRepository : IMovieRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Movie?>> GetAll()
+    public async Task<IEnumerable<Movie>> GetAll()
     {
         return await _dbContext
             .Movies
@@ -22,7 +22,7 @@ public class MovieRepository : IMovieRepository
             .ToListAsync();
     }
 
-    public async Task<Movie?> GetById(long id)
+    public async Task<Movie> GetById(long id)
     {
         return await _dbContext
             .Movies
