@@ -1,3 +1,3 @@
 namespace Application.Common.Dtos;
 
-public record PersonDto(string Name);
+public record PersonDto(long Id, string Name);

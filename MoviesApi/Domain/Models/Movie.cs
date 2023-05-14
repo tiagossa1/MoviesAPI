@@ -6,7 +6,7 @@ public class Movie : BaseEntity
     public decimal Budget { get; set; }
     public string HomepageUrl { get; set; } = null!;
     public string Plot { get; set; } = null!;
-    public DateOnly ReleaseDate { get; set; }
+    public DateTime ReleaseDate { get; set; }
     public int RuntimeInMinutes { get; set; }
 
     public IEnumerable<MovieCast> MovieCasts { get; set; }

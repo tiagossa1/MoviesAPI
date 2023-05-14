@@ -1,15 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Application.Genres.Queries.GetGenres;
+using FluentResults.Extensions.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class GenresController : ControllerBase
+    public class GenresController : BaseApiController
     {
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await Mediator.Send(new GetGenresQuery());
+            return result.IsFailed ? Problem() : Ok(result.ToActionResult());
+        }
     }
 }

@@ -1,3 +1,3 @@
 namespace Application.Common.Dtos;
 
-public record GenreDto(string Name);
+public record GenreDto(long Id, string Name);

@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Movies.Command.CreateMovie;
 
-public record CreateMovieCommand(string Title, decimal Budget, string HomepageUrl, string Plot, DateOnly ReleaseDate, int RuntimeInMinutes, IEnumerable<CreateMovieGenreCommand> GenreIds, IEnumerable<CreateMovieCastsCommand> MovieCasts) : IRequest<Result<long>>;
+public record CreateMovieCommand(string Title, decimal Budget, string HomepageUrl, string Plot, DateTime ReleaseDate, int RuntimeInMinutes, IEnumerable<CreateMovieGenreCommand> GenreIds, IEnumerable<CreateMovieCastsCommand> MovieCasts) : IRequest<Result<long>>;
 
 public class CreateMovieCommandHandler : IRequestHandler<CreateMovieCommand, Result<long>>
 {

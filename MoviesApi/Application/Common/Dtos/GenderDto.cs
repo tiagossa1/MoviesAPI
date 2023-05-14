@@ -1,3 +1,3 @@
 namespace Application.Common.Dtos;
 
-public record GenderDto(string Name);
+public record GenderDto(long Id, string Name);

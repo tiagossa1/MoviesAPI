@@ -22,6 +22,6 @@ public static class GenderMappers
             return null;
         }
 
-        return new GenderDto(genre.Name);
+        return new GenderDto(genre.Id, genre.Name);
     }
 }

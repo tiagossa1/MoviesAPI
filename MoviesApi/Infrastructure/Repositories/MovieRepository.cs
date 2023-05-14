@@ -18,6 +18,9 @@ public class MovieRepository : IMovieRepository
         return await _dbContext
             .Movies
             .Include(m => m.MovieCasts)
+                .ThenInclude(m => m.Person)
+            .Include(m => m.MovieCasts)
+                .ThenInclude(m => m.Gender)
             .Include(m => m.Genres)
             .ToListAsync();
     }
@@ -45,9 +48,11 @@ public class MovieRepository : IMovieRepository
         return await _dbContext.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> Delete(Movie obj)
+    public async Task<bool> Delete(long id)
     {
-        _dbContext.Movies.Remove(obj);
+        var entity = await _dbContext.Movies.FirstOrDefaultAsync(m => m.Id == id);
+        
+        _dbContext.Movies.Remove(entity);
         return await _dbContext.SaveChangesAsync() > 0;
     }
 }

@@ -22,6 +22,6 @@ public static class PersonMappers
             return null;
         }
 
-        return new PersonDto(person.Name);
+        return new PersonDto(person.Id, person.Name);
     }
 }

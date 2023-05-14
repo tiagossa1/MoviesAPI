@@ -17,9 +17,4 @@
       <PackageReference Include="MediatR" Version="12.0.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Movies\Command\DeleteMovie\" />
-      <Folder Include="Movies\Command\UpdateMovie\" />
-    </ItemGroup>
-
 </Project>

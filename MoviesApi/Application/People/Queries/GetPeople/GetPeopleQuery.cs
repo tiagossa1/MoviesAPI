@@ -1,4 +1,5 @@
 using Application.Common.Dtos;
+using Application.Common.Mappers;
 using Application.Interfaces;
 using FluentResults;
 using MediatR;
@@ -29,7 +30,7 @@ public class GetPeopleQueryHandler : IRequestHandler<GetPeopleQuery, Result<IEnu
                 return Result.Ok();
             }
         
-            return Result.Ok(people.Select(person => new PersonDto(person.Name)));
+            return Result.Ok(people.ToDto());
         }
         catch (Exception e)
         {

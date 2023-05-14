@@ -22,6 +22,6 @@ public static class GenreMappers
             return null;
         }
 
-        return new GenreDto(genre.Name);
+        return new GenreDto(genre.Id, genre.Name);
     }
 }
