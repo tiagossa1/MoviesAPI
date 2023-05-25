@@ -3,7 +3,6 @@ namespace Domain.Models;
 public class MovieCast
 {
     public long MovieId { get; set; }
-    public Movie Movie { get; set; }
     
     public long GenderId { get; set; }
     public Gender Gender { get; set; }
@@ -13,6 +12,6 @@ public class MovieCast
     
     public string CharacterName { get; set; }
     
-    public DateTime CreatedAtUtc { get; set; }
-    public DateTime UpdatedAtUtc { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }

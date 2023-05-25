@@ -1,4 +1,3 @@
-using Infrastructure;
 using IoC;
 using Microsoft.OpenApi.Models;
 
@@ -23,17 +22,13 @@ builder.Services.AddProjectDependencies();
 
 var app = builder.Build();
 
-// This is needed to seed the database.
-var scope = app.Services.CreateScope();
-var dbContext = scope.ServiceProvider.GetRequiredService<MoviesDbContext>();
-dbContext.Database.EnsureCreated();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.SeedFakeData();
+    
+    DatabaseMigration.Run();
 }
 
 app.UseHttpsRedirection();

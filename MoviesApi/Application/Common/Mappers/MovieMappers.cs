@@ -22,6 +22,6 @@ public static class MovieMappers
             return null;
         }
 
-        return new MovieDto(movie.Id, movie.Title, movie.Budget, movie.HomepageUrl, movie.Plot, movie.ReleaseDate, movie.RuntimeInMinutes, movie.MovieCasts.ToDto(), movie.Genres.ToDto());
+        return new MovieDto(movie.Id, movie.Title, movie.Budget, movie.Homepage, movie.Plot, movie.ReleaseDate, movie.RuntimeInMinutes, movie.MovieCasts.ToDto(), movie.Genres.ToDto());
     }
 }
