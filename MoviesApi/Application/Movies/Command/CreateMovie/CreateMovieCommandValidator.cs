@@ -27,7 +27,7 @@ public class CreateMovieCommandValidator : AbstractValidator<CreateMovieCommand>
             .GreaterThan(0);
 
         RuleForEach(c => c.GenreIds)
-            .SetValidator(new CreateMovieGenreCommandValidator());
+            .GreaterThan(0);
 
         RuleForEach(c => c.MovieCasts)
             .SetValidator(new CreateMovieCastsCommandValidator());

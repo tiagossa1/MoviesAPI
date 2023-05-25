@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Movies.Command.DeleteMovie;
 
-public record DeleteMovieCommand(int Id) : IRequest<Result>;
+public record DeleteMovieCommand(long Id) : IRequest<Result>;
 
 public class DeleteMovieCommandHandler : IRequestHandler<DeleteMovieCommand, Result>
 {

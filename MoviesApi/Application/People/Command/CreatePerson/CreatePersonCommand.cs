@@ -18,6 +18,12 @@ public class CreatePersonCommandHandler : IRequestHandler<CreatePersonCommand, R
 
     public async Task<Result<long>> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
     {
+        var personAlreadyExists = await _personRepository.DoesPersonAlreadyExists(request.Name);
+        if (personAlreadyExists)
+        {
+            return Result.Fail(new Error("Could not create the person: already exists in the database."));
+        }
+        
         var person = await _personRepository.Create(new Person
         {
             Name = request.Name

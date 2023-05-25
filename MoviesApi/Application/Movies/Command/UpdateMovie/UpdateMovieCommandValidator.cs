@@ -37,6 +37,6 @@ public class UpdateMovieCommandValidator : AbstractValidator<UpdateMovieCommand>
             .GreaterThan(0);
 
         RuleForEach(c => c.Genres)
-            .SetValidator(new UpdateMovieGenreCommandValidator());
+            .GreaterThan(0);
     }
 }
