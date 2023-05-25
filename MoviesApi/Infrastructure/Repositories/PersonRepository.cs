@@ -1,47 +1,159 @@
+using System.Transactions;
 using Application.Interfaces;
+using Dapper;
 using Domain.Models;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Repositories;
 
 public class PersonRepository : IPersonRepository
 {
-    private readonly MoviesDbContext _dbContext;
+    private readonly string _connectionString;
 
-    public PersonRepository(MoviesDbContext dbContext)
+    public PersonRepository(IConfiguration configuration)
     {
-        _dbContext = dbContext;
+        _connectionString = configuration.GetConnectionString("SqliteConnection");
     }
 
     public async Task<IEnumerable<Person>> GetAll()
     {
-        return await _dbContext.People.ToListAsync();
+        const string sql = @"SELECT
+                                Id,
+                                Name,
+                                CreatedAt,
+                                UpdatedAt
+                            FROM People";
+
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+
+        var people = await connection.QueryAsync<Person>(sql);
+        return people;
     }
 
     public async Task<Person> GetById(long id)
     {
-        return await _dbContext.People.FirstOrDefaultAsync(person => person.Id == id);
+        const string sql = @"SELECT
+                                Id, Name, CreatedAt, UpdatedAt
+                            FROM
+                                People
+                            WHERE Id = @id
+                            LIMIT 1";
+
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+
+        var person = await connection.QueryFirstOrDefaultAsync<Person>(sql, new { id });
+        return person;
     }
 
     public async Task<Person> Create(Person obj)
     {
-        var person = await _dbContext.People.AddAsync(obj);
-        await _dbContext.SaveChangesAsync();
+        const string sql = @"INSERT INTO People(Name) VALUES(@name);
+                            SELECT last_insert_rowid();";
 
-        return person.Entity;
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+
+        var id = await connection.ExecuteScalarAsync<long>(sql, new { name = obj.Name });
+        return await GetById(id);
     }
 
     public async Task<bool> Update(Person obj)
     {
-        _dbContext.People.Update(obj);
-        return await _dbContext.SaveChangesAsync() > 0;
+        const string sql = @"UPDATE People
+                            SET Name = @name
+                            WHERE Id = @id";
+
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+
+        await connection.QueryAsync<Person>(sql, new { id = obj.Id, name = obj.Name });
+        return true;
     }
 
     public async Task<bool> Delete(long id)
     {
-        var entity = await _dbContext.People.FirstOrDefaultAsync(p => p.Id == id);
+        const string sql = @"
+                            DELETE FROM
+                                MoviesCast
+                            WHERE
+                                PersonId = @id;
+                            
+                            DELETE FROM
+                                People
+                            WHERE
+                                Id = @id";
+
+        using var transactionScope = new TransactionScope();
+
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+
+        await connection.ExecuteAsync(sql, new { id });
+        transactionScope.Complete();
         
-        _dbContext.People.Remove(entity);
-        return await _dbContext.SaveChangesAsync() > 0;
+        return true;
+    }
+
+    public async Task<IEnumerable<Person>> Create(List<Person> people)
+    {
+        const string sql = @"INSERT INTO People(Name) VALUES(@name);
+                            SELECT last_insert_rowid();";
+
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+
+        await using var transaction = await connection.BeginTransactionAsync();
+        
+        try
+        {
+            var newIds = new List<long>(); 
+
+            foreach (var person in people)
+            {
+                var id = await connection.ExecuteScalarAsync<long>(sql, new { name = person.Name });
+                newIds.Add(id);
+            }
+
+            await transaction.CommitAsync();
+            return await GetByIds(newIds);
+        }
+        catch (Exception)
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+    }
+
+    public async Task<IEnumerable<Person>> GetByIds(List<long> ids)
+    {
+        const string sql = @"SELECT
+                                Id,
+                                Name,
+                                CreatedAt,
+                                UpdatedAt
+                            FROM
+                                People
+                            WHERE
+                                Id IN @ids";
+
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+
+        var people = await connection.QueryAsync<Person>(sql, new { ids });
+        return people;
+    }
+
+    public async Task<bool> DoesPersonAlreadyExists(string name)
+    {
+        const string sql = @"SELECT 1 FROM People WHERE Name = @name COLLATE NOCASE";
+
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+
+        var exists = await connection.QueryFirstOrDefaultAsync<bool>(sql, new { name });
+        return exists;
     }
 }

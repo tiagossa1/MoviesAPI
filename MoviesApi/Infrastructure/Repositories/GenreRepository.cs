@@ -1,25 +1,39 @@
 using Application.Interfaces;
+using Dapper;
 using Domain.Models;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Repositories;
 
 public class GenreRepository : IGenreRepository
 {
-    private readonly MoviesDbContext _dbContext;
+    private readonly string _connectionString;
 
-    public GenreRepository(MoviesDbContext dbContext)
+    public GenreRepository(IConfiguration configuration)
     {
-        _dbContext = dbContext;
+        _connectionString = configuration.GetConnectionString("SqliteConnection");
     }
 
     public async Task<IEnumerable<Genre>> GetAll()
     {
-        return await _dbContext.Genres.ToListAsync();
+        const string sql = "SELECT * FROM Genres";
+
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+        
+        var genres = await connection.QueryAsync<Genre>(sql);
+        return genres;
     }
 
     public async Task<Genre> GetById(long id)
     {
-        return await _dbContext.Genres.FirstOrDefaultAsync(genre => genre.Id == id);
+        const string sql = "SELECT * FROM Genres WHERE Id = @id";
+
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+        
+        var genre = await connection.QueryFirstOrDefaultAsync<Genre>(sql, new { id });
+        return genre;
     }
 }
