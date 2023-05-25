@@ -22,10 +22,10 @@ namespace WebAPI.Controllers
             return result.IsFailed ? Problem() : Ok(result.ToActionResult());
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete(DeleteMovieCommand command)
+        [HttpDelete("{id:long}")]
+        public async Task<IActionResult> Delete(long id)
         {
-            var result = await Mediator.Send(command);
+            var result = await Mediator.Send(new DeleteMovieCommand(id));
             return result.IsFailed ? Problem() : Ok();
         }
     }
