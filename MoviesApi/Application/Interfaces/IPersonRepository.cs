@@ -1,4 +1,5 @@
 using Domain.Models;
+using Domain.Responses;
 
 namespace Application.Interfaces;
 
@@ -9,4 +10,6 @@ public interface IPersonRepository : IReadRepository<Person>, IWriteRepository<P
     Task<IEnumerable<Person>> GetByIds(List<long> ids);
 
     Task<bool> DoesPersonAlreadyExists(string name);
+
+    Task<List<PeopleAlreadyExistResponse>> DoesPeopleAlreadyExist(List<string> names);
 }

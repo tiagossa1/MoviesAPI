@@ -2,6 +2,7 @@ using System.Transactions;
 using Application.Interfaces;
 using Dapper;
 using Domain.Models;
+using Domain.Responses;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 
@@ -93,7 +94,7 @@ public class PersonRepository : IPersonRepository
 
         await connection.ExecuteAsync(sql, new { id });
         transactionScope.Complete();
-        
+
         return true;
     }
 
@@ -106,10 +107,10 @@ public class PersonRepository : IPersonRepository
         await connection.OpenAsync();
 
         await using var transaction = await connection.BeginTransactionAsync();
-        
+
         try
         {
-            var newIds = new List<long>(); 
+            var newIds = new List<long>();
 
             foreach (var person in people)
             {
@@ -155,5 +156,18 @@ public class PersonRepository : IPersonRepository
 
         var exists = await connection.QueryFirstOrDefaultAsync<bool>(sql, new { name });
         return exists;
+    }
+
+    public async Task<List<PeopleAlreadyExistResponse>> DoesPeopleAlreadyExist(List<string> names)
+    {
+        const string sql = @"SELECT Id, Name FROM People WHERE Name IN @names COLLATE NOCASE";
+
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+
+        var people = await connection.QueryAsync<Person>(sql, new { names }) ?? Enumerable.Empty<Person>();
+        return names
+            .Select(name => new PeopleAlreadyExistResponse(name, people.Any(person => person.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))))
+            .ToList();
     }
 }

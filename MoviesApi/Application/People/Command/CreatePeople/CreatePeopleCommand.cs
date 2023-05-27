@@ -18,9 +18,20 @@ public class CreatePeopleCommandHandler : IRequestHandler<CreatePeopleCommand, R
 
     public async Task<Result<IEnumerable<long>>> Handle(CreatePeopleCommand request, CancellationToken cancellationToken)
     {
-        var people = await _personRepository.Create(request.Names
-            .Select(name => new Person { Name = name })
-            .ToList());
+        var peopleNames = request.Names
+            .Select(name => name.Trim())
+            .ToList();
+        
+        var peopleToInsert = await _personRepository.DoesPeopleAlreadyExist(peopleNames);
+        var peopleWhoDoesNotExist = peopleToInsert
+            .Where(person => !person.Exists)
+            .Select(person => new Person
+            {
+                Name = person.Name
+            })
+            .ToList();
+        
+        var people = await _personRepository.Create(peopleWhoDoesNotExist);
         
         return Result.Ok(people.Select(person => person.Id));
     }
