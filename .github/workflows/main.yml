@@ -15,7 +15,7 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies of API project
-        run: dotnet restore ../../MoviesApi/WebAPI/WebAPI.csproj
+        run: dotnet restore --project ../../MoviesApi/WebAPI/WebAPI.csproj
       - name: Build
         run: dotnet build --configuration Release --no-restore
       - name: Test
