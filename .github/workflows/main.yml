@@ -18,6 +18,6 @@ jobs:
       - name: Install dependencies of API project
         run: dotnet restore ${{ github.workspace }}/MoviesApi/WebAPI/WebAPI.csproj
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build ${{ github.workspace }}/MoviesApi/WebAPI/WebAPI.csproj --no-restore
       - name: Test
         run: dotnet test --no-build --verbosity normal
