@@ -20,4 +20,4 @@ jobs:
       - name: Build
         run: dotnet build ${{ github.workspace }}/MoviesApi/WebAPI/WebAPI.csproj --no-restore
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test ${{ github.workspace }}/MoviesApi/Application.UnitTests/Application.UnitTests.csproj --no-build --verbosity normal
