@@ -26,8 +26,14 @@ public class CreateMovieCommandValidator : AbstractValidator<CreateMovieCommand>
         RuleFor(c => c.RuntimeInMinutes)
             .GreaterThan(0);
 
+        RuleFor(c => c.GenreIds)
+            .NotEmpty();
+        
         RuleForEach(c => c.GenreIds)
             .GreaterThan(0);
+
+        RuleFor(c => c.MovieCasts)
+            .NotEmpty();
 
         RuleForEach(c => c.MovieCasts)
             .SetValidator(new CreateMovieCastsCommandValidator());

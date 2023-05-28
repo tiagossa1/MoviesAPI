@@ -14,7 +14,7 @@ public class UpdateMovieCommandValidator : AbstractValidator<UpdateMovieCommand>
             .MaximumLength(255);
         
         RuleFor(c => c.Budget)
-            .GreaterThan(0);
+            .GreaterThanOrEqualTo(0);
         
         RuleFor(c => c.HomepageUrl)
             .NotEmpty()
@@ -33,9 +33,9 @@ public class UpdateMovieCommandValidator : AbstractValidator<UpdateMovieCommand>
         RuleForEach(c => c.MovieCasts)
             .SetValidator(new UpdateMovieCastsCommandValidator());
 
-        RuleFor(c => c.RuntimeInMinutes)
-            .GreaterThan(0);
-
+        RuleFor(c => c.Genres)
+            .NotEmpty();
+        
         RuleForEach(c => c.Genres)
             .GreaterThan(0);
     }

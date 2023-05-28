@@ -6,6 +6,9 @@ public class CreatePeopleCommandValidator : AbstractValidator<CreatePeopleComman
 {
     public CreatePeopleCommandValidator()
     {
+        RuleFor(c => c.Names)
+            .NotEmpty();
+        
         RuleForEach(c => c.Names)
             .NotEmpty()
             .MaximumLength(255);
