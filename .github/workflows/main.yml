@@ -16,7 +16,7 @@ jobs:
         with:
           dotnet-version: 6.0.x
       - name: Install dependencies of API project
-        run: dotnet restore --project ${{ github.workspace }}/MoviesApi/WebAPI/WebAPI.csproj
+        run: dotnet restore ${{ github.workspace }}/MoviesApi/WebAPI/WebAPI.csproj
       - name: Build
         run: dotnet build --no-restore
       - name: Test
