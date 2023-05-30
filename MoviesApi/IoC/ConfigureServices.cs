@@ -22,6 +22,9 @@ public static class ConfigureServices
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         });
         
+        // Caching
+        service.AddMemoryCache();
+        
         // Repositories
         service.AddScoped<IGenderRepository, GenderRepository>();
         service.AddScoped<IGenreRepository, GenreRepository>();
