@@ -1,4 +1,6 @@
+using HealthChecks.UI.Client;
 using IoC;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +22,16 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddProjectDependencies();
 
+builder.Services.AddHealthChecks().AddSqlite(builder.Configuration.GetConnectionString("SqliteConnection"));
+builder.Services.AddHealthChecksUI().AddInMemoryStorage();
+
 var app = builder.Build();
+
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+app.MapHealthChecksUI();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
