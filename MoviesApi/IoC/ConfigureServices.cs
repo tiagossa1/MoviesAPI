@@ -1,9 +1,12 @@
 using Application.Common.Behaviours;
 using Application.Interfaces;
 using Application.Movies.Command.CreateMovie;
+using AspNetCoreRateLimit;
 using FluentValidation;
 using Infrastructure.Repositories;
 using MediatR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IoC;
@@ -32,5 +35,22 @@ public static class ConfigureServices
         service.AddScoped<IPersonRepository, PersonRepository>();
 
         return service;
+    }
+
+    public static IServiceCollection AddProductionProjectDependencies(this IServiceCollection service, ConfigurationManager configurationManager)
+    {
+        // Rate Limit
+        service.Configure<IpRateLimitOptions>(options => configurationManager.GetSection("IpRateLimitingSettings").Bind(options));
+        
+        service.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+        service.AddInMemoryRateLimiting();
+
+        return service;
+    }
+    
+    public static IApplicationBuilder UseRateLimiting(this IApplicationBuilder app)
+    {
+        app.UseIpRateLimiting();
+        return app;
     }
 }

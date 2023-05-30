@@ -5,10 +5,8 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -31,7 +29,9 @@ app.MapHealthChecks("/health", new HealthCheckOptions
 {
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
+
 app.MapHealthChecksUI();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -40,6 +40,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     
     DatabaseMigration.Run();
+}
+else
+{
+    builder.Services.AddProductionProjectDependencies(builder.Configuration);
+    app.UseRateLimiting();
 }
 
 app.UseHttpsRedirection();
