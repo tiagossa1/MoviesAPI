@@ -1,5 +1,6 @@
 using Application.Common.Dtos;
 using Domain.Models;
+using Mapster;
 
 namespace Application.Common.Mappers;
 
@@ -17,11 +18,6 @@ public static class PersonMappers
 
     public static PersonDto ToDto(this Person person)
     {
-        if (person is null)
-        {
-            return null;
-        }
-
-        return new PersonDto(person.Id, person.Name);
+        return person?.Adapt<PersonDto>();
     }
 }

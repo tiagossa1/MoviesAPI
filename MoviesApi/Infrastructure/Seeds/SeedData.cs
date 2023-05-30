@@ -3,7 +3,7 @@ using Domain.Models;
 using FluentMigrator;
 using Microsoft.Data.Sqlite;
 
-namespace Infrastructure.Profiles;
+namespace Infrastructure.Seeds;
 
 [Profile("Seed")]
 public class SeedData : BaseSeedMigration

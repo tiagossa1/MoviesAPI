@@ -1,5 +1,6 @@
 using Application.Common.Dtos;
 using Domain.Models;
+using Mapster;
 
 namespace Application.Common.Mappers;
 
@@ -17,11 +18,6 @@ public static class MovieMappers
 
     public static MovieDto ToDto(this Movie movie)
     {
-        if (movie is null)
-        {
-            return null;
-        }
-
-        return new MovieDto(movie.Id, movie.Title, movie.Budget, movie.Homepage, movie.Plot, movie.ReleaseDate, movie.RuntimeInMinutes, movie.MovieCasts.ToDto(), movie.Genres.ToDto());
+        return movie?.Adapt<MovieDto>();
     }
 }

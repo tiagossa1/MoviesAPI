@@ -2,7 +2,7 @@ using Dapper;
 using FluentMigrator;
 using Microsoft.Data.Sqlite;
 
-namespace Infrastructure.Profiles;
+namespace Infrastructure.Seeds;
 
 public abstract class BaseSeedMigration : Migration
 {

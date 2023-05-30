@@ -1,5 +1,6 @@
 using Application.Common.Dtos;
 using Domain.Models;
+using Mapster;
 
 namespace Application.Common.Mappers;
 
@@ -17,11 +18,6 @@ public static class GenderMappers
 
     public static GenderDto ToDto(this Gender genre)
     {
-        if (genre is null)
-        {
-            return null;
-        }
-
-        return new GenderDto(genre.Id, genre.Name);
+        return genre?.Adapt<GenderDto>();
     }
 }
