@@ -23,7 +23,14 @@ builder.Services.AddProjectDependencies();
 builder.Services.AddHealthChecks().AddSqlite(builder.Configuration.GetConnectionString("SqliteConnection"));
 builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 
+builder.Services.AddCors(p => p.AddPolicy("moviesapi", policy =>
+{
+    policy.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
+
 var app = builder.Build();
+
+app.UseCors("moviesapi");
 
 app.MapHealthChecks("/health", new HealthCheckOptions
 {
@@ -31,7 +38,6 @@ app.MapHealthChecks("/health", new HealthCheckOptions
 });
 
 app.MapHealthChecksUI();
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
