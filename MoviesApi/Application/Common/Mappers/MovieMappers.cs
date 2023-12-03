@@ -6,17 +6,14 @@ namespace Application.Common.Mappers;
 
 public static class MovieMappers
 {
-    public static IEnumerable<MovieDto> ToDto(this IEnumerable<Movie> movies)
+    public static IList<MovieDto> ToDto(this IList<Movie> movies)
     {
-        if (movies is null || !movies.Any())
-        {
-            return null;
-        }
-
-        return movies.Select(ToDto);
+        return movies
+            ?.Select(ToDto)
+            .ToList();
     }
 
-    public static MovieDto ToDto(this Movie movie)
+    private static MovieDto ToDto(this Movie movie)
     {
         return movie?.Adapt<MovieDto>();
     }

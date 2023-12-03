@@ -7,9 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Movies.Queries.GetMovies;
 
-public record GetMoviesQuery : IRequest<Result<IEnumerable<MovieDto>>>;
+public record GetMoviesQuery : IRequest<Result<IList<MovieDto>>>;
 
-public class GetMoviesQueryHandler : IRequestHandler<GetMoviesQuery, Result<IEnumerable<MovieDto>>>
+public class GetMoviesQueryHandler : IRequestHandler<GetMoviesQuery, Result<IList<MovieDto>>>
 {
     private readonly ILogger<GetMoviesQueryHandler> _logger;
     private readonly IMovieRepository _movieRepository;
@@ -20,7 +20,7 @@ public class GetMoviesQueryHandler : IRequestHandler<GetMoviesQuery, Result<IEnu
         _logger = logger;
     }
 
-    public async Task<Result<IEnumerable<MovieDto>>> Handle(GetMoviesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IList<MovieDto>>> Handle(GetMoviesQuery request, CancellationToken cancellationToken)
     {
         try
         {

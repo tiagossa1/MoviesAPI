@@ -21,7 +21,7 @@ public class GenreRepository : IGenreRepository
         _connectionString = configuration.GetConnectionString("SqliteConnection");
     }
 
-    public async Task<IEnumerable<Genre>> GetAll()
+    public async Task<IList<Genre>> GetAll()
     {
         return await _memoryCache.GetOrCreateAsync(GetAllKey, async entry =>
         {
@@ -33,7 +33,7 @@ public class GenreRepository : IGenreRepository
             await connection.OpenAsync();
 
             var genres = await connection.QueryAsync<Genre>(sql);
-            return genres;
+            return genres?.ToList();
         });
     }
 

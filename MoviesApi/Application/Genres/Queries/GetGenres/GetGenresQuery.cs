@@ -7,9 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Genres.Queries.GetGenres;
 
-public record GetGenresQuery : IRequest<Result<IEnumerable<GenreDto>>>;
+public record GetGenresQuery : IRequest<Result<IList<GenreDto>>>;
 
-public class GetGenresQueryHandler : IRequestHandler<GetGenresQuery, Result<IEnumerable<GenreDto>>>
+public class GetGenresQueryHandler : IRequestHandler<GetGenresQuery, Result<IList<GenreDto>>>
 {
     private readonly ILogger<GetGenresQueryHandler> _logger;
     private readonly IGenreRepository _genreRepository;
@@ -20,7 +20,7 @@ public class GetGenresQueryHandler : IRequestHandler<GetGenresQuery, Result<IEnu
         _genreRepository = genreRepository;
     }
 
-    public async Task<Result<IEnumerable<GenreDto>>> Handle(GetGenresQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IList<GenreDto>>> Handle(GetGenresQuery request, CancellationToken cancellationToken)
     {
         try
         {

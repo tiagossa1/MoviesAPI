@@ -6,17 +6,14 @@ namespace Application.Common.Mappers;
 
 public static class GenreMappers
 {
-    public static IEnumerable<GenreDto> ToDto(this IEnumerable<Genre> genres)
+    public static IList<GenreDto> ToDto(this IList<Genre> genres)
     {
-        if (genres is null || !genres.Any())
-        {
-            return null;
-        }
-
-        return genres.Select(ToDto);
+        return genres
+            ?.Select(ToDto)
+            .ToList();
     }
 
-    public static GenreDto ToDto(this Genre genre)
+    private static GenreDto ToDto(this Genre genre)
     {
         return genre?.Adapt<GenreDto>();
 ;    }

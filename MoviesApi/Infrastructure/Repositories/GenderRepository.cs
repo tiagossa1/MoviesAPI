@@ -22,7 +22,7 @@ public class GenderRepository : IGenderRepository
         _connectionString = configuration.GetConnectionString("SqliteConnection");
     }
 
-    public async Task<IEnumerable<Gender>> GetAll()
+    public async Task<IList<Gender>> GetAll()
     {
         return await _memoryCache.GetOrCreateAsync(GetAllKey, async entry =>
         {
@@ -34,7 +34,7 @@ public class GenderRepository : IGenderRepository
             await connection.OpenAsync();
         
             var genders = await connection.QueryAsync<Gender>(sql);
-            return genders;   
+            return genders?.ToList();   
         });
     }
 

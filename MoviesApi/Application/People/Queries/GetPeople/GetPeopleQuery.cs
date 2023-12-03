@@ -7,9 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.People.Queries.GetPeople;
 
-public record GetPeopleQuery : IRequest<Result<IEnumerable<PersonDto>>>;
+public record GetPeopleQuery : IRequest<Result<IList<PersonDto>>>;
 
-public class GetPeopleQueryHandler : IRequestHandler<GetPeopleQuery, Result<IEnumerable<PersonDto>>>
+public class GetPeopleQueryHandler : IRequestHandler<GetPeopleQuery, Result<IList<PersonDto>>>
 {
     private readonly ILogger<GetPeopleQueryHandler> _logger;
     private readonly IPersonRepository _personRepository;
@@ -20,16 +20,11 @@ public class GetPeopleQueryHandler : IRequestHandler<GetPeopleQuery, Result<IEnu
         _logger = logger;
     }
 
-    public async Task<Result<IEnumerable<PersonDto>>> Handle(GetPeopleQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IList<PersonDto>>> Handle(GetPeopleQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var people = await _personRepository.GetAll();
-            if (!people.Any())
-            {
-                return Result.Ok();
-            }
-        
             return Result.Ok(people.ToDto());
         }
         catch (Exception e)

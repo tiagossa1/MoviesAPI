@@ -7,9 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Genders.Queries.GetGenders;
 
-public record GetGendersQuery : IRequest<Result<IEnumerable<GenderDto>>>;
+public record GetGendersQuery : IRequest<Result<IList<GenderDto>>>;
 
-public class GetGendersQueryHandler : IRequestHandler<GetGendersQuery, Result<IEnumerable<GenderDto>>>
+public class GetGendersQueryHandler : IRequestHandler<GetGendersQuery, Result<IList<GenderDto>>>
 {
     private readonly ILogger<GetGendersQueryHandler> _logger;
     private readonly IGenderRepository _genderRepository;
@@ -20,7 +20,7 @@ public class GetGendersQueryHandler : IRequestHandler<GetGendersQuery, Result<IE
         _genderRepository = genderRepository;
     }
 
-    public async Task<Result<IEnumerable<GenderDto>>> Handle(GetGendersQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IList<GenderDto>>> Handle(GetGendersQuery request, CancellationToken cancellationToken)
     {
         try
         {

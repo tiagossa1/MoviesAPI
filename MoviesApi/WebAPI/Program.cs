@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "Movies API - Test only",
-        Description = "Movies API made in .NET 6"
+        Description = "Movies API made in .NET 8"
     });
 });
 
@@ -27,6 +27,8 @@ builder.Services.AddCors(p => p.AddPolicy("moviesapi", policy =>
 {
     policy.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
+
+MappingConfig.Configure();
 
 var app = builder.Build();
 

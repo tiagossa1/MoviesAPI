@@ -17,7 +17,7 @@ public class PersonRepository : IPersonRepository
         _connectionString = configuration.GetConnectionString("SqliteConnection");
     }
 
-    public async Task<IEnumerable<Person>> GetAll()
+    public async Task<IList<Person>> GetAll()
     {
         const string sql = @"SELECT
                                 Id,
@@ -30,7 +30,7 @@ public class PersonRepository : IPersonRepository
         await connection.OpenAsync();
 
         var people = await connection.QueryAsync<Person>(sql);
-        return people;
+        return people?.ToList();
     }
 
     public async Task<Person> GetById(long id)

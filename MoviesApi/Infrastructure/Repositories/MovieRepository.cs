@@ -34,7 +34,7 @@ public class MovieRepository : IMovieRepository
         _connectionString = configuration.GetConnectionString("SqliteConnection");
     }
 
-    public async Task<IEnumerable<Movie>> GetAll()
+    public async Task<IList<Movie>> GetAll()
     {
         const string sql = @"SELECT
 	                            M.*,
