@@ -14,12 +14,16 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "Movies API - Test only",
-        Description = "Movies API made in .NET 8"
+        Description = "Movies API made in .NET 10"
     });
 });
 
 builder.Services.AddProjectDependencies();
 
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Services.AddProductionProjectDependencies(builder.Configuration);
+}
 builder.Services.AddHealthChecks().AddSqlite(builder.Configuration.GetConnectionString("SqliteConnection"));
 builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 
@@ -51,7 +55,6 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    builder.Services.AddProductionProjectDependencies(builder.Configuration);
     app.UseRateLimiting();
 }
 
