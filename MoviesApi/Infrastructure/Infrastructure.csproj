@@ -15,9 +15,9 @@
     <ItemGroup>
       <PackageReference Include="Bogus" Version="34.0.2" />
       <PackageReference Include="Dapper" Version="2.0.123" />
-      <PackageReference Include="FluentMigrator" Version="3.3.2" />
-      <PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
-      <PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.3.2" />
+      <PackageReference Include="FluentMigrator" Version="8.0.1" />
+      <PackageReference Include="FluentMigrator.Runner" Version="8.0.1" />
+      <PackageReference Include="FluentMigrator.Runner.SQLite" Version="8.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.12" />
       <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.12" />
