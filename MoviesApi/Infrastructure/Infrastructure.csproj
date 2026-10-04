@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>latestmajor</LangVersion>
@@ -19,8 +19,8 @@
       <PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
       <PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.3.2" />
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-      <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.20" />
-      <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.20" />
+      <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.12" />
+      <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.12" />
     </ItemGroup>
 
 </Project>
