@@ -1,6 +1,6 @@
 # MoviesAPI
 
-A REST API about movies, built with ASP.NET Core (.NET 8) and SQLite. I use it as a base for front-end projects and for trying out architecture ideas.
+A REST API about movies, built with ASP.NET Core (.NET 10) and SQLite. I use it as a base for front-end projects and for trying out architecture ideas.
 
 ## Structure
 
@@ -29,7 +29,7 @@ The solution has five projects: Domain, Application, Infrastructure, IoC and Web
 
 ## Running it
 
-You need the .NET 8 SDK.
+You need the .NET 10 SDK.
 
 ```bash
 git clone https://github.com/tiagossa1/MoviesAPI.git
@@ -44,6 +44,19 @@ To run the tests:
 ```bash
 dotnet test Application.UnitTests
 ```
+
+### Docker
+
+From the `MoviesApi` folder:
+
+```bash
+docker build -f WebAPI/Dockerfile -t moviesapi .
+docker run -p 8080:8080 -e ASPNETCORE_ENVIRONMENT=Development moviesapi
+```
+
+Migrations only run in Development, so the container needs that environment variable to create the database. Swagger is then at `http://localhost:8080/swagger`.
+
+Outside Development the API rate limits requests by IP (5 per hour, configured in `appsettings.json`) and Swagger is off.
 
 ## Database schema
 
